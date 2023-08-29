@@ -1,24 +1,29 @@
-import logo from './logo.svg';
+import {useState} from "react";
 import './App.css';
+import TodoList from "./components/TodoList/TodoList";
+import TodoInput from "./components/TodoInput/TodoInput";
 
 function App() {
+
+  const [todos, setTodos] = useState(['Plugga React']);
+
+  const addTodo = (evt) => {
+    evt.preventDefault();
+
+    const newTodo = evt.target.elements.todo.value;
+
+    setTodos([...todos, newTodo]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <h1>My Todo App</h1>
+      {/* TodoInput */}
+      <TodoInput submitHandler={addTodo}/>
+
+      {/* List */}
+      <TodoList todos={todos}/>
+    </main>
   );
 }
 
