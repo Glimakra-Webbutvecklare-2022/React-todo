@@ -5,16 +5,25 @@ import TodoInput from "./components/TodoInput/TodoInput";
 
 function App() {
 
-  const [todos, setTodos] = useState(['Plugga React']);
+  const [todos, setTodos] = useState(['Plugga React', 'Sova', 'Träna']);
 
   const addTodo = (evt) => {
     evt.preventDefault();
 
-    const newTodo = evt.target.elements.todo.value;
+    const newTodoFromUser = evt.target.elements.todo.value;
+    
+    const newTodos = [...todos, newTodoFromUser];
 
-    setTodos([...todos, newTodo]);
+    setTodos(newTodos);
   }
 
+  const removeTodo = (todoToRemove) => {
+
+    const newTodos = todos.filter( todo => todo !== todoToRemove)
+
+    setTodos(newTodos);
+  }
+ 
   return (
     <main>
       <h1>My Todo App</h1>
@@ -22,7 +31,7 @@ function App() {
       <TodoInput submitHandler={addTodo}/>
 
       {/* List */}
-      <TodoList todos={todos}/>
+      <TodoList todos={todos} xClickHandler={removeTodo}/>
     </main>
   );
 }
