@@ -37,13 +37,24 @@ function App() {
 
   }
 
-  const editTodo = (todoToEdit) => {
-    console.log("I should edit ", todoToEdit);
+  const editTodo = (todoToEdit, newText) => {
 
-    const filteredTodos = todos.filter(item => item.text !== todoToEdit.text); // keep all todos except todoToRemove
+    const oldText = todoToEdit.text;
+    const filteredTodos = todos.filter(item => item.text !== oldText); // keep all todos except todoToRemove
 
-    const newTodos = [...filteredTodos, {text: todoToEdit.text, isEditable: !todoToEdit.isEditable}]
 
+
+    // when we start edit we want the old text
+    // if (todoToEdit.isEditable === false) {
+    //   const newTodos = [...filteredTodos, {text: oldText, isEditable: true}]
+    //   setTodos(newTodos);
+    // // when we save we want to new text
+    // } else { 
+    //   const newTodos = [...filteredTodos, {text: newText, isEditable: false}]
+    //   setTodos(newTodos);
+    // }
+
+    const newTodos = [...filteredTodos, { text: todoToEdit.isEditable ? newText : oldText, isEditable: !todoToEdit.isEditable}]
     setTodos(newTodos);
   }
 
