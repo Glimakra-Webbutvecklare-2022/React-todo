@@ -1,9 +1,11 @@
 import {useState} from "react";
 import './App.css';
+import TodoInput from "./components/TodoInput/TodoInput";
+import TodoList from "./components/TodoList/TodoList";
 
 function App() {
   // stateful array to keep track on todos
-  const [todos, setTodos] = useState([{text: 'Plugga react 1 timme', isEditable: false}]);
+  const [todos, setTodos] = useState([{text: 'Plugga react 1 timme', isEditable: false, isDone: false}]);
   // let todos = ['plugga react 1 timme'];
 
   // function to addTodo
@@ -11,7 +13,7 @@ function App() {
     evt.preventDefault(); // stop form from redirecting
     // todos.push(todoToAdd);
 
-    const todoToAdd = { text: evt.target.elements.todo.value, isEditable: false}; // extract text input
+    const todoToAdd = { text: evt.target.elements.todo.value, isEditable: false, isDone: false}; // extract text input
     evt.target.elements.todo.value = ""; // reset text input
 
     const newTodos = [...todos, todoToAdd]; // create new array as todos
@@ -26,6 +28,15 @@ function App() {
     setTodos(filteredTodos);
   }
 
+  const finishTodo = (todoToFinish) => {
+    const updatedTodo = {...todoToFinish, isDone: true};
+
+    const filteredTodos = todos.filter(item => item.text !== todoToFinish.text);
+
+    setTodos([...filteredTodos, updatedTodo]);
+
+  }
+
   const editTodo = (todoToEdit) => {
     console.log("I should edit ", todoToEdit);
 
@@ -36,20 +47,21 @@ function App() {
     setTodos(newTodos);
   }
 
+  const todosLeft = todos.filter(item => !item.isDone);
+  const todosDone = todos.filter(item => item.isDone);
+
   return (
     <main>
       <h1>My todo app</h1>
-      {/* TodoInput */}
-      <form onSubmit={addTodo}>
-        <input type="text" name="todo" />
-        <button type="submit">Add</button>
-      </form>
+      <TodoInput onSubmit={addTodo}/>
 
       {/* TodoList */}
+      <TodoList todos={todosLeft} removeTodo={removeTodo} editTodo={editTodo} finishTodo={finishTodo}/>
+
+
+      <h2>Done</h2>
       <ul>
-        {/* map todos into li */}
-        {todos.map(item => (<li key={item}> <span contentEditable={item.isEditable}>{item.text}</span> <button onClick={() => removeTodo(item)}>X</button> 
-                                                 <button onClick={() => editTodo(item)}>E</button>  </li>))}
+      {todosDone.map(item => <li>{item.text}</li>)}
       </ul>
     </main>
   );
